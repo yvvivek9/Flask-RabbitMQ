@@ -36,8 +36,6 @@ quantity = input_data["quantity"]
 orders = input_data['orders']
 n = input_data['n']
 
-print(orders)
-
 message_body_consumertwo = json.dumps({'name': name_of_item, 'price': price_of_item})
 
 message_body_consumerthree = json.dumps({'name': name, 'quantity': quantity})
@@ -48,7 +46,6 @@ message_body_consumerfour = json.dumps({'n': n, 'orders': orders})
 channel.basic_publish(exchange='',routing_key='item_queue', body=message_body_consumertwo)
 channel.basic_publish(exchange='',routing_key='shipping_queue', body=message_body_consumerthree)
 channel.basic_publish(exchange='', routing_key='op_queue', body=message_body_consumerfour)
-
 
 print("Sent item data to RabbitMQ")
 

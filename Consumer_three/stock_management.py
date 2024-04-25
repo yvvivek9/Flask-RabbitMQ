@@ -20,6 +20,7 @@ mysql_cursor = mysql_connection.cursor()
 
 def callback(ch, method, properties, body):
     message_data = json.loads(body.decode())
+    print("Consumer 3 recieved msg: " + json.dumps(message_data))
 
     name = message_data['name']
     quantity = int(message_data['quantity'])
@@ -52,7 +53,7 @@ channel.queue_declare(queue='shipping_queue')
 
 messages_received = 0
 channel.basic_consume(queue='shipping_queue', on_message_callback=callback)
-print('Waiting for messages. To exit press CTRL+C')
+print('Consumer 3 started. Waiting for messages.')
 channel.start_consuming()
 mysql_cursor.close()
 mysql_connection.close()

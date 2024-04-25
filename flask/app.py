@@ -6,6 +6,8 @@ app = Flask(__name__)
 def health_check():
     return jsonify({'status': 'ok'})
 
+
+
 @app.route('/consumer_one', methods=['GET'])
 def get_consumer_one():
     return jsonify({'consumer': 'Consumer One'}), 200
@@ -27,4 +29,4 @@ def get_producer():
     return jsonify({'producer': 'Producer'}), 200
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)

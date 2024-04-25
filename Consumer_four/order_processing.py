@@ -19,7 +19,7 @@ mysql_cursor = mysql_connection.cursor()
 
 def callback(ch, method, properties, body):
     message_data = json.loads(body.decode())
-    print(message_data)
+    print("Consumer 4 recieved msg: " + json.dumps(message_data))
 
 
     # Extract name and price from the message
@@ -27,7 +27,7 @@ def callback(ch, method, properties, body):
 
     mysql_cursor.execute("""INSERT INTO orders (total_amount) VALUES (0)""")
     order_id = mysql_cursor.lastrowid
-    print(order_id)
+    # print(order_id)
 
     for i in range(n):
         order = message_data['orders'][i]
@@ -38,10 +38,10 @@ def callback(ch, method, properties, body):
         mysql_cursor.execute("""SELECT item_id, price FROM items WHERE items.name = %(name)s""", {'name': name})
         present_quantity = mysql_cursor.fetchall()
         # if item not present, need to send to error queue and explain that the item needs to be added to table
-        print(present_quantity)
+        # print(present_quantity)
         i = present_quantity[0][0]
         price = int(present_quantity[0][1])
-        print(i)
+        # print(i)
         
         mysql_cursor.execute("""INSERT INTO order_items (order_id, item_id, quantity, price_per_item) 
                                 VALUES (%(order_id)s, %(item_id)s, %(quantity)s, %(price)s)""", {'order_id': order_id, 'item_id':i, 'quantity': quantity, 'price': price})
@@ -66,7 +66,7 @@ channel.queue_declare(queue='op_queue')
 
 messages_received = 0
 channel.basic_consume(queue='op_queue', on_message_callback=callback)
-print('Waiting for messages. To exit press CTRL+C')
+print('Consumer 4 started. Waiting for messages.')
 channel.start_consuming()
 mysql_cursor.close()
 mysql_connection.close()

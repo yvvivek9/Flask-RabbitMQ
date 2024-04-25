@@ -21,6 +21,7 @@ mysql_cursor = mysql_connection.cursor()
 def callback(ch, method, properties, body):
     # Decode the JSON message received from producer
     message_data = json.loads(body.decode())
+    print("Consumer 2 recieved msg: " + json.dumps(message_data))
 
     # Extract name and price from the message
     name = message_data['name']
@@ -51,7 +52,7 @@ channel.queue_declare(queue='item_queue')
 # Set up consumer parameters
 channel.basic_consume(queue='item_queue', on_message_callback=callback)
 
-print('Waiting for messages. To exit press CTRL+C')
+print('Consumer 2 started. Waiting for messages.')
 channel.start_consuming()
 
 # Close connections
