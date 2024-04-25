@@ -1,6 +1,10 @@
 import pika
 import json
 import sys
+import time
+
+#wait for RabbitMQ to start
+time.sleep(20)
 
 # Connect to RabbitMQ
 try:

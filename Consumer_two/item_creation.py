@@ -4,11 +4,14 @@ import json
 import time
 import sys
 
+#wait for RabbitMQ to start
+time.sleep(20)
+
 # Connect to MySQL database
 mysql_connection = mysql.connector.connect(
     host='mysql',
     user='root',
-    password='newyork1176',
+    password='Password@123',
     database='inventory',
     autocommit=True,
     port=3306
