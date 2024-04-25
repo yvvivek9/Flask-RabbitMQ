@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: Shadow@090703
+      MYSQL_DATABASE: inventory
+    volumes:
+      - ./DDL.sql:/docker-entrypoint-initdb.d/DDL.sql
+
+  rabbitmq:
+    image: 'rabbitmq:3-management'
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+
+  consumer_one:
+    build: Consumer_one
+    volumes:
+      - ./Consumer_one:/app
+    ports:
+      - "5124:5124"
+    depends_on:
+      - mysql
+
+  producer:
+    build: Producer
+    volumes:
+      - ./Producer:/app
+    ports:
+      - "5123:5123"
+    depends_on:
+      - consumer_one
+      - mysql
+
+  consumer_two:
+    build: Consumer_two
+    volumes:
+      - ./Consumer_two:/app
+    ports:
+      - "5125:5125"
+    depends_on:
+      - producer
+      - mysql
+
+  consumer_three:
+    build: Consumer_three
+    volumes:
+      - ./Consumer_three:/app
+    ports:
+      - "5126:5126"
+    depends_on:
+      - producer
+      - mysql
+
+  consumer_four:
+    build: Consumer_four
+    volumes:
+      - ./Consumer_four:/app
+    ports:
+      - "5127:5127"
+    depends_on:
+      - producer
+      - mysql
+
+  flask:
+    build: flask
+    volumes:
+      - ./flask:/app
+    ports:
+      - "5001:5001"
+    depends_on:
+      - consumer_one
+      - consumer_two
+      - consumer_three
+      - consumer_four

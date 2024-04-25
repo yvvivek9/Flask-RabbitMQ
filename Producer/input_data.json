@@ -1,0 +1,14 @@
+{
+    "name_of_item" : "chocolate",
+    "price_of_item" : 500,
+  
+    "name" : "Item1",
+    "quantity" : 5,
+    
+    "n": 2,
+    "orders": [
+        {"name": "Item1", "quantity": 5},
+        {"name": "Item2", "quantity": 10}
+    ] 
+}
+    
